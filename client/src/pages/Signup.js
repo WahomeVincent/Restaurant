@@ -4,11 +4,21 @@ import { FaRegUser } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { BiShowAlt } from "react-icons/bi";
 import { BiHide } from "react-icons/bi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup() {
+
+const navigate = useNavigate();
 const [showPassword, setShowPassword] = useState(false)
 const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+})
+
 
 function toggleShowPassword() {
     setShowPassword(prevE => !prevE)
@@ -18,56 +28,125 @@ function toggleShowConfirmPassword() {
     setShowConfirmPassword(prevE => !prevE)
 }
 
-  return (
-    <div className='' >
-        <div className='flex  items-center justify-center h-screen '>
-           
-                <form className='flex flex-col gap-1 md:w-96 bg-white border shadow-lg drop-shadow-lg rounded-lg p-2'>
-                    <h1 className='text-xl font-semibold'>Signup</h1>
-                    <h2 className='text-xs'>Please sign up to continue</h2>
+function handleInputChange(e){
+    const {name, value} = e.target
+    setData((prevE) =>{
+        return{
+            ...prevE,
+            [name] : value
+        }
+    })
+}
 
-                    <label htmlFor='firstname' className='text-gray-600 text-sm'>First Name</label>
+function handleSubmit (e) {
+    e.preventDefault();
+
+    if(data.password === data.confirmPassword){
+        alert('Password Successfully added.')
+    }else{
+        alert('Passwords do not match!')
+    }
+
+    navigate('/login');
+}
+
+  return (
+    <div className='w-full h-full' >
+        <div className='bg-no-repeat md:bg-cover h-screen object-cover ' style={{backgroundImage: `url(${registerlogo})`}}>
+            <div className='flex  items-center justify-center h-screen '>
+           
+                <form className='flex flex-col gap-1 mt-20 md:w-96 md:p-6 bg-white border shadow-lg drop-shadow-lg rounded-lg p-4 overflow-hidden' onSubmit={handleSubmit}>
+                    <h1 className='text-xl font-semibold mt-10 '>Signup</h1>
+                    <h2 className='text-xs mb-5'>Please sign up to continue</h2>
+
+                    <label htmlFor='firstName' className='text-gray-600 text-sm'>First Name</label>
                     <div className='relative'>
-                        <input type='text' id='firstname' placeholder='Your First name' className='mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"  rounded-lg w-full h-8'/>
+                        <input 
+                            type='text' 
+                            id='firstName' 
+                            name='firstName'
+                            required 
+                            placeholder='Your First name' 
+                            className='mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"  rounded-lg w-full h-8'
+                            value={data.fistName}
+                            onChange={handleInputChange}
+                            />
                         <span><FaRegUser className='absolute top-4 left-2 text-gray-600 ' /></span>
                     </div>
 
-                    <label htmlFor='lastname' className='text-gray-600 text-sm'>Last Name</label>
+                    <label htmlFor='lastName' className='text-gray-600 text-sm'>Last Name</label>
                     <div className='relative'>
-                        <input type='text' id='lastname' placeholder='Your Last name' className=' mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8' />
+                        <input 
+                            type='text' 
+                            id='lastName' 
+                            name='lastName'
+                            required 
+                            placeholder='Your Last name' 
+                            className=' mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8' 
+                            value={data.lastName}
+                            onChange={handleInputChange}
+                            />
                         <span><FaRegUser className='absolute top-4 left-2 text-gray-600 ' /></span>
                     </div>
 
                     <label htmlFor='email' className='text-gray-600 text-sm'>Email</label>
                     <div className='relative'>
-                        <input type='email' id='email' placeholder='Your Email' className=' mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8' />
+                        <input 
+                            type='email' 
+                            id='email' 
+                            name='email'
+                            required 
+                            placeholder='Your Email' 
+                            className=' mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8' 
+                            value={data.email}
+                            onChange={handleInputChange}
+                            />
                         <span><MdOutlineMail className='absolute top-4 left-2 text-gray-600 ' /> </span>
                     </div>
 
                     <label htmlFor='password' className='text-gray-600 text-sm'>Password</label>
                     <div className='relative '>
-                        <input type={showPassword ? 'text' : 'password'} id='password' placeholder='Type a strong Password' className='text-xs mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8'/>
+                        <input 
+                            type={showPassword ? 'text' : 'password'} 
+                            id='password' 
+                            name='password'
+                            required 
+                            placeholder='Type a strong Password' 
+                            className='text-xs mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8'
+                            value={data.password}
+                            onChange={handleInputChange}
+                            />
                         <span className='absolute top-4 right-3 flex ' onClick={toggleShowPassword}>{showPassword ? <BiShowAlt /> : <BiHide />} </span>
                     </div>
 
-                    <label htmlFor='confirmpassword' className='text-gray-600 text-sm'>Confirm Password</label>
+                    <label htmlFor='confirmPassword' className='text-gray-600 text-sm'>Confirm Password</label>
                     <div className='relative '>
-                        <input type={showConfirmPassword ? 'text' : 'password'} id='confirmpassword' placeholder='Please confirm your Password' className='text-xs mt-1 pl-8 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8'/>
+                        <input 
+                            type={showConfirmPassword ? 'text' : 'password'} 
+                            required 
+                            id='confirmPassword' 
+                            name='confirmPassword'
+                            placeholder='Please confirm your Password' 
+                            className='text-xs mt-1 pl-8 py-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"  rounded-lg w-full h-8'
+                            value={data.confirmPassword}
+                            onChange={handleInputChange}
+                            />
                         <span className='absolute top-4 right-3 flex' onClick={toggleShowConfirmPassword}>{showConfirmPassword ? <BiShowAlt /> : <BiHide /> } </span>
                         
                     </div>
 
-                    <div className='bg-yellow-400 rounded-lg text-lg flex items-center justify-center p-2 '>
-                    <button className=''>Sign Up</button>
+                    <div >
+                        <button className='bg-yellow-400 rounded-lg text-lg flex items-center justify-center p-2 my-6 hover:bg-yellow-300 hover:scale-110 cursor-pointer w-full'>Sign Up</button>
                     </div>
 
-                    <div className='flex items-center justify-center text-xs text-gray-700 py-4 mt-10'>
+                    <div className='flex items-center justify-center text-xs text-gray-700 py-4 mt-2'>
                         <p>Already have an account?
-                            <Link to={'signin'} className='underline ml-1 text-blue-400'>Sign In</Link>
+                            <Link to={'/login'} className='underline ml-1 text-blue-400'>Sign In</Link>
                         </p>
                     </div>
                 </form>
             
+            </div>
         </div>
     </div>
   )
