@@ -5,6 +5,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { BiShowAlt } from "react-icons/bi";
 import { BiHide } from "react-icons/bi";
 import { Link, useNavigate } from 'react-router-dom';
+import { ImageToBase64 } from '../utility/ImageToBase';
 
 function Signup() {
 
@@ -16,7 +17,8 @@ const [data, setData] = useState({
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    image: ""
 })
 
 
@@ -42,12 +44,22 @@ function handleSubmit (e) {
     e.preventDefault();
 
     if(data.password === data.confirmPassword){
-        alert('Password Successfully added.')
+        alert('Account created successfully added.')
+        navigate('/login');
     }else{
         alert('Passwords do not match!')
-    }
+    }   
+}
 
-    navigate('/login');
+async function handleProfilePic(e){
+    const data = await ImageToBase64(e.target.files[0])
+
+   setData(prevE => {
+    return{
+      ...prevE,
+      image :data
+    }
+   })
 }
 
   return (
@@ -56,6 +68,20 @@ function handleSubmit (e) {
             <div className='flex  items-center justify-center h-screen '>
            
                 <form className='flex flex-col gap-1 mt-20 md:w-96 md:p-6 bg-white border shadow-lg drop-shadow-lg rounded-lg p-4 overflow-hidden' onSubmit={handleSubmit}>
+                    <div className='w-28 overflow-hidden m-auto rounded-full shadow-lg drop-shadow-lg relative'>
+                        <img src={data.image ? data.image : 'https://cdn.pixabay.com/animation/2022/12/05/10/47/10-47-58-930_256.gif' } alt='user' className='rounded-lg' />
+                        <label htmlFor='profilePic'>
+                        <div className='absolute -bottom-3 left-1 px-8 py-2 h-1/3 bg-yellow-400 w-full'>
+                          <p className='text-xs'>Profile</p>
+                        </div>
+                        <input 
+                            type={'file'}
+                            id='profilePic'
+                            onChange={handleProfilePic}
+                            accept='image/*'
+                        />
+                    </label>
+                    </div>
                     <h1 className='text-xl font-semibold mt-10 '>Signup</h1>
                     <h2 className='text-xs mb-5'>Please sign up to continue</h2>
 
