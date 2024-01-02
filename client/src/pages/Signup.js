@@ -40,12 +40,23 @@ function handleInputChange(e){
     })
 }
 
-function handleSubmit (e) {
+console.log(process.env.REACT_APP_SERVER_DOMAIN);
+ async function handleSubmit (e) {
     e.preventDefault();
 
     if(data.password === data.confirmPassword){
-        alert('Account created successfully added.')
-        navigate('/login');
+        const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/signup`, {
+            method : "POST",
+            headers : {
+                "content-type" : "application/json"
+            },
+            body : JSON.stringify(data)
+        })
+
+        const dataRes = await fetchData.json()
+        console.log(dataRes);
+        alert(dataRes.message)
+        // navigate('/login');
     }else{
         alert('Passwords do not match!')
     }   
