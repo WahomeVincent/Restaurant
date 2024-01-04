@@ -4,6 +4,7 @@ import { BiShowAlt } from "react-icons/bi";
 import { BiHide } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import { ImageToBase64 } from '../utility/ImageToBase';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 function Login() {
@@ -14,8 +15,6 @@ function Login() {
     password: '',
     image: ''
   })
-
-  
 
   function toggleShowPassword() {
     setShowPassword(prevE => !prevE)
@@ -31,9 +30,26 @@ function Login() {
     })
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    alert('Login successfull')
+    const {email, password} = data
+    if(email && password){
+      alert('Login successfull')
+      const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/login`, {
+        method : "POST",
+        headers : {
+            "content-type" : "application/json"
+        },
+        body : JSON.stringify(data)
+    })
+
+    const dataRes = await fetchData.json()
+    console.log(dataRes);
+    toast(dataRes.message)
+    }else{
+      alert('Please Enter required fields')
+    }
+    
   }
 
   async function handleProfilePic(e){
