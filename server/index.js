@@ -82,7 +82,6 @@ app.post('/login', (req, res) => {
                     email: result.email,
                     image: result.image
                 } 
-                console.log(dataSend);
                 res.send({message: "Login Successfull", alert:true, data : dataSend})
             }else {
                 res.send({message: "Incorrect Email ID or Password.", alert:false})

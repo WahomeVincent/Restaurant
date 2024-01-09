@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { MdOutlineMail } from "react-icons/md";
 import { BiShowAlt } from "react-icons/bi";
 import { BiHide } from "react-icons/bi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ImageToBase64 } from '../utility/ImageToBase';
 import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRedux } from "../redux/userSlice"
 
 
 function Login() {
@@ -13,8 +15,14 @@ function Login() {
   const [data, setData] = useState({
     email: '',
     password: '',
-    image: ''
+   
   })
+
+  const navigate = useNavigate()
+
+  const userData = useSelector(state => state)
+
+  const dispatch = useDispatch()
 
   function toggleShowPassword() {
     setShowPassword(prevE => !prevE)
@@ -34,7 +42,6 @@ function Login() {
     e.preventDefault();
     const {email, password} = data
     if(email && password){
-      alert('Login successfull')
       const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/login`, {
         method : "POST",
         headers : {
@@ -42,10 +49,14 @@ function Login() {
         },
         body : JSON.stringify(data)
     })
+     const dataRes = await fetchData.json()
+    toast(userData.user.firstName + dataRes.message)
 
-    const dataRes = await fetchData.json()
-    console.log(dataRes);
-    toast(dataRes.message)
+    if(dataRes.alert){
+      dispatch(loginRedux(dataRes))
+      navigate('/')
+    }
+
     }else{
       alert('Please Enter required fields')
     }

@@ -1,16 +1,27 @@
 import React, { useState } from 'react'
 import logo from '../assets/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { FaUser } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6"
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutRedux } from '../redux/userSlice';
+import { toast } from "react-hot-toast"
 
 function Header() {
 
 const [showMenu, setShowMenu] = useState(false);
+const userData = useSelector((state) => state.user)
+
+const dispatch = useDispatch()
 
 function toggleMenu() {
     setShowMenu(prevE => !prevE)
     
+}
+
+function handleLogout() {
+    dispatch(logoutRedux())
+    toast('LogOut Successfull')
 }
 
   return (
@@ -37,14 +48,19 @@ function toggleMenu() {
                     </div>
                 </div>
                 <div className='text-lg text-slate-600'  onClick={toggleMenu}>
-                    <div className='border-2 border-solid border-slate-400 rounded-lg p-1 cursor-pointer'>
-                    <FaUser id='user' />
+                    <div className='border-2 border-solid border-slate-300 rounded-full overflow-hidden cursor-pointer w-10 h-10 text-2xl flex items-center justify-center'>
+                        {
+                            userData.image ? <img src={userData.image} className='w-full h-full' /> : <FaUser id='user' className='' />
+                        }
+                        
                     </div>
                     { showMenu && 
                          <div className='absolute right-2 py-4 px-2 bg-white shadow drop-shadow-md my-2' >
                          <Link to={'newproduct'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
                          <hr></hr>
-                         <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
+                         {
+                                userData.email ? <p className='whitespace-nowrap cursor-pointer' onClick={handleLogout}>Logout</p> : <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
+                         }
                      </div>
                     }
                    
