@@ -90,6 +90,28 @@ app.post('/login', (req, res) => {
         })
 })
 
+
+// New Products
+// schema
+
+const productSchema = mongoose.Schema({
+    name: String,
+    category: String,
+    image: String,
+    price: Number,
+    description: String
+})
+
+const productModel = mongoose.model('products', productSchema)
+
+//api
+app.post('/newproduct', (req, res) => {
+    const data  = productModel(req.body)
+    const dataSave =  data.save()
+    res.send({message: "Login Successfull"})
+
+})
+
 app.listen(PORT, () => {
     console.log("Server is running at port:" + PORT);
 })
