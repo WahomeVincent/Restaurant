@@ -2,10 +2,16 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
+const bodyParser = require('body-parser');
+
 
 const app = express()
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
 app.use(cors())
 app.use(express.json())
+
 
 const PORT = process.env.PORT || 8080
 
@@ -108,7 +114,7 @@ const productModel = mongoose.model('products', productSchema)
 app.post('/newproduct', (req, res) => {
     const data  = productModel(req.body)
     const dataSave =  data.save()
-    res.send({message: "Login Successfull"})
+    res.send({message: "Product Updated Successfully"})
 
 })
 
