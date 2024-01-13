@@ -11,7 +11,6 @@ function Header() {
 
 const [showMenu, setShowMenu] = useState(false);
 const userData = useSelector((state) => state.user)
-
 const dispatch = useDispatch()
 
 function toggleMenu() {
@@ -55,11 +54,13 @@ function handleLogout() {
                         
                     </div>
                     { showMenu && 
-                         <div className='absolute right-2 py-4 px-2 bg-white shadow drop-shadow-md my-2' >
-                         <Link to={'newproduct'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
+                         <div className='absolute right-2 py-2 px-1 bg-white shadow drop-shadow-md my-2' >
+                            {
+                                userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={'newproduct'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
+                            }
                          <hr></hr>
                          {
-                                userData.email ? <p className='whitespace-nowrap cursor-pointer' onClick={handleLogout}>Logout</p> : <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
+                                userData.email ? <p className='whitespace-nowrap cursor-pointer p-1 bg-red-500' onClick={handleLogout}>Logout ({userData.firstName})</p> : <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
                          }
                      </div>
                     }
