@@ -1,15 +1,27 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Homecard from '../components/Homecard'
 import { useSelector } from 'react-redux'
 import CardFeature from '../components/CardFeature';
+import { FcNext } from "react-icons/fc";
+import { FcPrevious } from "react-icons/fc";
 
 function Home() {
   const productData = useSelector((state) => state.product.productList)
   const homeProductCartList = productData.slice(0, 6)
   const homeProductcartListVegetable = productData.filter(item => item.category === 'Vegetable')
-  console.log(homeProductcartListVegetable);
 
   const loadingArray = new Array(6).fill(null)
+
+  const moveUseRef = useRef()
+
+  function moveNext(){
+      moveUseRef.current.scrollLeft += 200
+  }
+
+  function movePrevious(){
+    moveUseRef.current.scrollLeft -= 200
+
+  }
 
   return (
     <div className='p-2 md:p-4'>
@@ -50,8 +62,12 @@ function Home() {
         </div>
       </div>
       <div className=''>
-            <h2 className='font-bold text-2xl text-slate-800 '>Fresh Vegetables</h2>
-            <div className='flex'>
+            <h2 className='font-bold text-2xl text-slate-800 mb-4'>Fresh Vegetables</h2>
+            <div className='flex flex-row-reverse my-4 gap-4'  >
+              <button onClick= {moveNext} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded'><FcNext /></button>
+              <button onClick={movePrevious} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded'><FcPrevious /></button>
+            </div>
+            <div className='flex gap-4 overflow-scroll scrollbar-none scroll-smooth animation transition-all' ref={moveUseRef}>
               { homeProductcartListVegetable.map(item => {
                 return(
                   <CardFeature 
