@@ -26,7 +26,7 @@ function handleLogout() {
   return (
     <div className='header bg-white fixed w-full shadow h-16 px-2 md:px-4 z-50'>
         {/* desktop */}
-        <div className='flex items-center justify-between h-full'>
+        <div className=' flex items-center justify-between h-full'>
             <Link to={''}>
                 <div className='h-10'>
                     <img src={logo} alt='' className='h-full' />
@@ -34,7 +34,7 @@ function handleLogout() {
             </Link>
 
             <div className='flex items-center gap-4 md:gap-8'>
-                <nav className='flex gap-4 md:gap-7 text-base md:text-lg'>
+                <nav className=' hidden md:flex gap-4 md:gap-7 text-base md:text-lg'>
                     <Link to={''}>Home</Link> 
                     <Link to={'menu'}>Menu</Link>
                     <Link to={'about'}>About</Link>
@@ -46,7 +46,7 @@ function handleLogout() {
                         0
                     </div>
                 </div>
-                <div className='text-lg text-slate-600'  onClick={toggleMenu}>
+                <div className='text-lg text-slate-600 mx-2'  onClick={toggleMenu}>
                     <div className='border-2 border-solid border-slate-300 rounded-full overflow-hidden cursor-pointer w-10 h-10 text-2xl flex items-center justify-center'>
                         {
                             userData.image ? <img src={userData.image} className='w-full h-full' /> : <FaUser id='user' className='' />
@@ -54,15 +54,21 @@ function handleLogout() {
                         
                     </div>
                     { showMenu && 
-                         <div className='absolute right-2 py-2 px-1 bg-white shadow drop-shadow-md my-2' >
-                            {
-                                userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={'newproduct'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
-                            }
-                         <hr></hr>
-                         {
-                                userData.email ? <p className='whitespace-nowrap cursor-pointer p-1 bg-red-500' onClick={handleLogout}>Logout ({userData.firstName})</p> : <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
-                         }
-                     </div>
+                         <div className='absolute right-2 py-2 px-3 bg-white shadow drop-shadow-md my-2' >
+                                {
+                                    userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to={'newproduct'} className='whitespace-nowrap cursor-pointer'>New Product</Link>
+                                }
+                                
+                                {
+                                        userData.email ? <p className='whitespace-nowrap cursor-pointer p-1 bg-red-500' onClick={handleLogout}>Logout ({userData.firstName})</p> : <Link to={'login'} className='whitespace-nowrap cursor-pointer'>Login</Link>
+                                }
+                                <nav className=' flex flex-col text-lg md:hidden'>
+                                    <Link to={''} className=''>Home</Link> 
+                                    <Link to={'menu'} className=''>Menu</Link>
+                                    <Link to={'about'} className=''>About</Link>
+                                    <Link to={'contact'} className=''>Contact</Link>
+                                </nav>
+                        </div>
                     }
                    
                 </div>
