@@ -1,9 +1,10 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Homecard from '../components/Homecard'
 import { useSelector } from 'react-redux'
 import CardFeature from '../components/CardFeature';
 import { FcNext } from "react-icons/fc";
 import { FcPrevious } from "react-icons/fc";
+import Filter from '../components/Filter';
 
 function Home() {
   const productData = useSelector((state) => state.product.productList)
@@ -11,8 +12,29 @@ function Home() {
   const homeProductcartListVegetable = productData.filter(item => item.category === 'Vegetable')
 
   const loadingArray = new Array(6).fill(null)
-
   const moveUseRef = useRef()
+
+  const categoryList = [...new Set(productData.map(item => item.category))]
+
+  // Filter display data
+  const [filterBy, setFilterBy] = useState()
+  const [dataFilter, setDataFilter] = useState([])
+
+  useEffect(() => {
+    setDataFilter(productData)
+
+  }, [productData])
+  
+
+  function handleFilterProduct(category){
+    const filter = productData.filter(item => item.category.toLowerCase() === category.toLowerCase())
+    setDataFilter(() => {
+      return[
+          ...filter
+      ]
+    })
+  }
+  
 
   function moveNext(){
       moveUseRef.current.scrollLeft += 200
@@ -62,10 +84,12 @@ function Home() {
         </div>
       </div>
       <div className=''>
-            <h2 className='font-bold text-2xl text-slate-800 mb-4'>Fresh Vegetables</h2>
-            <div className='flex flex-row-reverse my-4 gap-4'  >
-              <button onClick= {moveNext} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded'><FcNext /></button>
-              <button onClick={movePrevious} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded'><FcPrevious /></button>
+            <div className='flex items-center my-3'>
+              <h2 className='font-bold text-2xl text-slate-800 mt-3'>Fresh Vegetables</h2>
+              <div className='ml-auto '  >
+                <button onClick={movePrevious} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded mx-2'><FcPrevious /></button>
+                <button onClick= {moveNext} className='bg-slate-200 hover:bg-slate-300 text-2xl rounded'><FcNext /></button>
+              </div>
             </div>
             <div className='flex gap-4 overflow-scroll scrollbar-none scroll-smooth animation transition-all' ref={moveUseRef}>
               { homeProductcartListVegetable.map(item => {
@@ -79,6 +103,39 @@ function Home() {
                   />
                 )
               })
+              }
+            </div>
+
+            <div className='my-4'>
+              <h2 className='font-bold text-2xl text-slate-800 '>Your Product</h2>
+              <div className='flex gap-6  items-center justify-center py-2 overflow-scroll scrollbar-none'>
+                  {
+                    categoryList[0] && categoryList.map(item => {
+                      return(
+                        <Filter 
+                          category={item}
+                          onClick={() => handleFilterProduct(item)}
+                        />
+                      )
+                    })
+                  }
+                    
+              </div>
+            </div>
+
+            <div className='flex flex-wrap gap-4 justify-center'>
+              {
+                dataFilter.map(item => {
+                  return(
+                    <CardFeature 
+                        key={item._id}
+                        image={item.image}
+                        name = {item.name}
+                        price = {item.price}
+                        category = {item.category}
+                    />
+                  )
+                })
               }
             </div>
       </div>
