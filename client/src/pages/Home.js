@@ -96,6 +96,7 @@ function Home() {
                 return(
                   <CardFeature 
                     key={item._id}
+                    id={item._id}
                     image = {item.image}
                     name = {item.name}
                     price = {item.price}
@@ -129,6 +130,7 @@ function Home() {
                   return(
                     <CardFeature 
                         key={item._id}
+                        id={item._id}
                         image={item.image}
                         name = {item.name}
                         price = {item.price}
