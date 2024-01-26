@@ -13,6 +13,8 @@ const [showMenu, setShowMenu] = useState(false);
 const userData = useSelector((state) => state.user)
 const dispatch = useDispatch()
 
+const cartItemNumber = useSelector(state => state.product.cartItem)
+
 function toggleMenu() {
     setShowMenu(prevE => !prevE)
     
@@ -36,15 +38,17 @@ function handleLogout() {
             <div className='flex items-center gap-4 md:gap-8'>
                 <nav className=' hidden md:flex gap-4 md:gap-7 text-base md:text-lg'>
                     <Link to={''}>Home</Link> 
-                    <Link to={'menu'}>Menu</Link>
+                    <Link to={'menu/65a69c83f7f86b9f06b47f28'}>Menu</Link>
                     <Link to={'about'}>About</Link>
                     <Link to={'contact'}>Contact</Link>
                 </nav>
                 <div className='text-2xl text-slate-600 relative'>
-                    <FaCartShopping />
-                    <div className='absolute -top-2 -right-2 text-white bg-red-500 h-4 w-4 rounded-full m-0 p-0 text-xs text-center'>
-                        0
-                    </div>
+                    <Link to={'cart'}>
+                        <FaCartShopping />
+                        <div className='absolute -top-2 -right-2 text-white bg-red-500 h-4 w-4 rounded-full m-0 p-0 text-xs text-center'>
+                            {cartItemNumber.length}
+                        </div>
+                    </Link>
                 </div>
                 <div className='text-lg text-slate-600 mx-2'  onClick={toggleMenu}>
                     <div className='border-2 border-solid border-slate-300 rounded-full overflow-hidden cursor-pointer w-10 h-10 text-2xl flex items-center justify-center'>
@@ -64,7 +68,7 @@ function handleLogout() {
                                 }
                                 <nav className=' flex flex-col text-lg md:hidden'>
                                     <Link to={''} className=''>Home</Link> 
-                                    <Link to={'menu'} className=''>Menu</Link>
+                                    <Link to={'menu/65a69c83f7f86b9f06b47f28'} className=''>Menu</Link>
                                     <Link to={'about'} className=''>About</Link>
                                     <Link to={'contact'} className=''>Contact</Link>
                                 </nav>
