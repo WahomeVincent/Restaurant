@@ -22,10 +22,20 @@ export const productSlice = createSlice({
                 toast('Item deleted')
                 const index = state.cartItem.findIndex(item => item._id === action.payload)
                 state.cartItem.splice(index, 1)
+        },
+        increaseQuantity : (state, action) => {
+                const index = state.cartItem.findIndex(item => item._id === action.payload)
+                let quantity = state.cartItem[index].quantity
+                state.cartItem[index].quantity = ++quantity
+        }, 
+        decreaseQuantity : (state, action) => {
+            const index = state.cartItem.findIndex(item => item._id === action.payload)
+            let quantity = state.cartItem[index].quantity
+            state.cartItem[index].quantity = --quantity
         }
     }
 })
 
-export const {setDataProduct, addCartItem, deleteCartItem} = productSlice.actions
+export const {setDataProduct, addCartItem, deleteCartItem, increaseQuantity, decreaseQuantity} = productSlice.actions
 
 export default productSlice.reducer

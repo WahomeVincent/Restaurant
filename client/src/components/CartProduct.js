@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from 'react-redux'
-import { deleteCartItem } from '../redux/productSlice';
+import { decreaseQuantity, deleteCartItem, increaseQuantity } from '../redux/productSlice';
 
 
 function CartProduct({id, name, image, category, price, quantity, total}) {
@@ -24,9 +24,9 @@ function CartProduct({id, name, image, category, price, quantity, total}) {
 
                 <div className='md:flex items-center justify-between '>
                     <div className='flex gap-4 my-2'>
-                        <button className='bg-yellow-300 p-1 rounded'><FaPlus /></button>
+                        <button className='bg-yellow-300 p-1 rounded' onClick={() => dispatch(increaseQuantity(id))}><FaPlus /></button>
                         <p>{quantity}</p>
-                        <button className='bg-yellow-300 p-1 rounded'><FaMinus /></button>
+                        <button className='bg-yellow-300 p-1 rounded' onClick={() => dispatch(decreaseQuantity(id))}><FaMinus /></button>
                     </div>
 
                     <div className='flex gap-2'>
