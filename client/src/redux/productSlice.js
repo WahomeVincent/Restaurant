@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
 const initialState = {
     productList : [],
@@ -13,12 +14,14 @@ export const productSlice = createSlice({
                 state.productList = [...action.payload]
         },
         addCartItem : (state, action) => {
-                    console.log(action);
                     const total = action.payload.price
-                    state.cartItem = [...state.cartItem, {...action.payload, quantity : 1}]
+                    state.cartItem = [...state.cartItem, {...action.payload, quantity : 1, total : total}]
         },
         deleteCartItem : (state, action) => {
-
+                console.log(action.payload);
+                toast('Item deleted')
+                const index = state.cartItem.findIndex(item => item._id === action.payload)
+                state.cartItem.splice(index, 1)
         }
     }
 })
