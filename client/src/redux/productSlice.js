@@ -36,14 +36,32 @@ export const productSlice = createSlice({
         increaseQuantity : (state, action) => {
                 const index = state.cartItem.findIndex(item => item._id === action.payload)
                 let quantity = state.cartItem[index].quantity
-                state.cartItem[index].quantity = ++quantity
+                let quantityIncrease = ++quantity
+                state.cartItem[index].quantity = quantityIncrease
+
+                const price = state.cartItem[index].price
+                let totalPrice = price * quantityIncrease
+
+                state.cartItem[index].total = totalPrice 
+
         }, 
         decreaseQuantity : (state, action) => {
             const index = state.cartItem.findIndex(item => item._id === action.payload)
             let quantity = state.cartItem[index].quantity
+
             if (quantity > 1) {
-                state.cartItem[index].quantity = --quantity
+                let quantityDecrease = --quantity
+
+                state.cartItem[index].quantity = quantityDecrease
+
+
+                const price = state.cartItem[index].price
+                let totalPrice = price * quantityDecrease
+                state.cartItem[index].total = totalPrice 
             }
+
+           
+
         }
     }
 })
